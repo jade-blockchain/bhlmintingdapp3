@@ -158,7 +158,7 @@ export const loadGoldListedUser= async (address) => {
 };
 
 let wcprovider=null;
-const WalletConnectProvider = window.WalletConnectProvider.default;
+const WalletConnectProvider = window.WalletConnectProvider?.default;
 const providerOptions = {
   walletconnect: {
       package: WalletConnectProvider,
@@ -224,8 +224,8 @@ export const fetchAccountData = async () => {
   {
   const library = new ethers.providers.Web3Provider(wcprovider);
   const _accounts = await library.listAccounts();
-  const _Netowrk = await library.getNetwork();
-  if (_Netowrk.chainId.toString() !== NetworkID) {
+  const _Network = await library.getNetwork();
+  if (_Network.chainId.toString() !== NetworkID) {
      if( await switchNetwork() === false)
      {
          return {
@@ -390,9 +390,9 @@ export const mintFunction = async (address, message) => {
   }
   const _library = new ethers.providers.Web3Provider(wcprovider);
   const _account = await _library.listAccounts();
-  const _Netwrk = await _library.getNetwork();
+  const _Network = await _library.getNetwork();
 
-  if(_Netwrk.chainId.toString() !== NetworkID.toString())
+  if(_Network.chainId.toString() !== NetworkID.toString())
   {
     return {
       status:
