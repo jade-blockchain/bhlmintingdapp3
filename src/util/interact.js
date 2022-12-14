@@ -158,7 +158,7 @@ export const loadGoldListedUser= async (address) => {
 };
 
 let wcprovider=null;
-const WalletConnectProvider = window.WalletConnectProvider.default;
+const WalletConnectProvider = window.WalletConnectProvider?.default;
 const providerOptions = {
   walletconnect: {
       package: WalletConnectProvider,

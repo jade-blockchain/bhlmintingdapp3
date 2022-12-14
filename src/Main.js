@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import logo from './images/logo-head.png';
 import Button from 'react-bootstrap/Button';
 import logoNFT from './images/NFT3.png';
@@ -46,7 +46,8 @@ const MainPage = () => {
   const [MaxSupply, setMaxSupply] = useState(5555);
   const [MinEthBalance, setMinEthBalance] = useState(0);
   const [MAXNFTPERADDRESSLIMIT, setMAXNFTPERADDRESSLIMIT] = useState(0);
-  useEffect(async () => {
+
+  const temporaryInit = useCallback(async () => {
     // const Cost = await loadCost();
     // setCost(Cost);
     
@@ -76,10 +77,14 @@ const MainPage = () => {
     setPrice(p / 1000000000000000000);
   }, []);
 
-  useEffect(async () => {
-    //const timer = setTimeout(async () =>  { const TotalSupply2 = await  loadTotalSupply();setTotalSupply(TotalSupply2); }, 60e3)
-    //return () => clearTimeout(timer)
-   });
+  useEffect(() => {
+    temporaryInit();
+  }, [temporaryInit]);
+
+  // useEffect(async () => {
+  //   const timer = setTimeout(async () =>  { const TotalSupply2 = await  loadTotalSupply();setTotalSupply(TotalSupply2); }, 60e3)
+  //   return () => clearTimeout(timer)
+  //  });
 
 const  addWalletListener =  (prvdr) => {
   if(prvdr!==null){
