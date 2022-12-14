@@ -30,6 +30,7 @@ import {
   loadMINETHVALUE
 } from "./util/interact.js";
 
+var renderer = null
 
 const MainPage = () => {
   const [walletAddress, setWallet] = useState("");
@@ -45,6 +46,7 @@ const MainPage = () => {
   const [MaxSupply, setMaxSupply] = useState(5555);
   const [MinEthBalance, setMinEthBalance] = useState(0);
   const [MAXNFTPERADDRESSLIMIT, setMAXNFTPERADDRESSLIMIT] = useState(0);
+
   const temporaryInit = useCallback(async () => {
     // const Cost = await loadCost();
     // setCost(Cost);
@@ -78,6 +80,11 @@ const MainPage = () => {
   useEffect(() => {
     temporaryInit();
   }, [temporaryInit]);
+
+  // useEffect(async () => {
+  //   const timer = setTimeout(async () =>  { const TotalSupply2 = await  loadTotalSupply();setTotalSupply(TotalSupply2); }, 60e3)
+  //   return () => clearTimeout(timer)
+  //  });
 
 const  addWalletListener =  (prvdr) => {
   if(prvdr!==null){
