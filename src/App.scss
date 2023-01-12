@@ -12531,9 +12531,9 @@ body #root {
 }
 
 .main-body {
-  background: url("./images/body-bg.png") no-repeat center;
+  background: url("./images/Machine.png") no-repeat center;
   background-size: cover;
-  padding-bottom: 30px;
+  padding-bottom: 69px;
   flex: auto;
   font-family: "Big Shoulders Display"
 }
@@ -12549,12 +12549,12 @@ body #root {
 
 .btn {
   font-size: 20px;
-  font-family: "Robot Invaders"
+  font-family: "Ultraquick"
 }
 
 .btn-theme-box {
   position: relative;
-  display: inline-block
+  display: inline-block;
 }
 
 .btn-theme-box:after {
@@ -12564,7 +12564,7 @@ body #root {
   right: -4px;
   top: 4px;
   bottom: -4px;
-  border-radius: 4px;
+  border-radius: 10px;
   background: #000
 }
 
@@ -12577,20 +12577,19 @@ body #root {
 
 .btn-theme-box .btn-theme {
   position: relative;
-  z-index: 1
+  z-index: 1;
 }
 
 .btn-theme {
   border-width: 3px;
-  color: #fff;
-  background-color: #eb088b;
-  border-color: #000;
-  position: relative
+  color: #000;
+  background-color: #0c90bf;
+  border-color: #000
 }
 
 .btn-theme:hover {
-  color: #fff;
-  background-color: #eb088b;
+  color: #000;
+  background-color: #0c90bf;
   border-color: #000
 }
 
@@ -12606,7 +12605,7 @@ body #root {
   height: 100%;
   top: 0;
   bottom: 0;
-  background: #da6cab;
+  background: #2aa9d8; 
   transform: skew(-30deg);
   transition: .5s all;
   left: 15%
@@ -12624,18 +12623,20 @@ body #root {
 
 .btn-theme.btn-lg,
 .btn-group-lg>.btn-theme.btn {
-  font-size: 34px;
-  padding: 8px 30px;
-  min-width: 200px
+  font-size: 42px;
+  padding: 0px 30px;
+  min-width: 300px;
+  height: 70px
 }
 
 .btn-theme.btn-no-line:after,
 .btn-theme.btn-no-line:before {
-  content: none
+  content: none;
+  border-radius: 50%
 }
 
 header .container {
-  background: #ff4950;
+  background: #fff;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   padding: 5px 20px
@@ -12656,10 +12657,41 @@ header .nabvar-brand a {
 }
 
 header .btn {
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1;
   letter-spacing: 1px;
-  padding: 5px 20px
+  padding: 5px 20px;
+  background-color: #0c90bf;
+  color: #000
+}
+
+header .btn:hover {
+  color: #000;
+  background-color: #0c90bf;
+  border-color: #000
+}
+
+header .btn:hover::after {
+  left: 50%
+}
+
+header .btn::before,
+header .btn::after {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  background: #2aa9d8; 
+  transform: skew(-30deg);
+  transition: .5s all;
+  left: 15%
+}
+
+header .btn:after {
+  width: 15px;
+  left: calc(25% + 25px)
 }
 
 .buy-nft {
@@ -12667,7 +12699,29 @@ header .btn {
 }
 
 .buy-nft .container {
-  background: #fff;
+  background-color: rgb(255,255,255, 0.7);
+  padding: 5px 55px 40px 55px;
+  border-radius: 20px;
+  border: solid 4px #000
+}
+
+.dudelznft {
+  padding: 50px 20px
+}
+
+.dudelznft .container {
+  background-color: rgb(255,255,255, 0.7);
+  padding: 5px 15px 40px 15px;
+  border-radius: 20px;
+  border: solid 4px #000
+}
+
+.meltednft {
+  padding: 50px 20px
+}
+
+.meltednft .container {
+  background-color: rgb(255,255,255, 0.7);
   padding: 5px 55px 40px 55px;
   border-radius: 20px;
   border: solid 4px #000
@@ -12675,12 +12729,12 @@ header .btn {
 
 .heading h2,
 .heading .h2 {
-  font-weight: 700;
+  font-weight: 500;
   font-size: 24px;
   line-height: 35px;
   color: #343434;
   margin: 0;
-  font-family: "Robot Invaders"
+  font-family: "Ultraquick"
 }
 
 .heading {
@@ -12703,31 +12757,38 @@ header .btn {
   display: flex;
   align-items: center;
   margin: 15px 0;
-  border-radius: 4px
+  padding-bottom: 8px
 }
 
 .buyDesc .buyCalculator .buyCounter .btn-theme-box:after {
-  border-radius: 100%
+  border-radius: 15%
 }
 
 .buyDesc .buyCalculator .buyCounter .btn-theme-box .btn {
-  padding: 5px 8px;
-  font-size: 1.125rem;
-  border-radius: 100%;
+  padding: 0px 6px;
+  font-size: 26px;
   width: 40px;
-  height: 40px
+  height: 40px;
+  background-color: #F9BB11;
+  color: #000
+}
+
+.buyDesc .buyCalculator .buyCounter .btn-theme-box .btn:hover {
+  color: #000;
+  background-color: #fabb0f;
+  border-color: #000
 }
 
 .buyDesc .buyCalculator .buyCounter input {
   height: 44px;
   background: rgba(0, 0, 0, 0);
-  width: 100px;
+  width: 218px;
   text-align: center;
   border: 0;
   color: #343434;
-  font-weight: 700;
+  font-weight: 500;
   font-family: "Ultraquick";
-  font-size: 20px
+  font-size: 20px;
 }
 
 .buyDesc .buyCalculator .buyCounter input:focus,
@@ -12739,6 +12800,7 @@ header .btn {
 
 .buyDesc .buyCalculator p {
   margin: 0 0 10px;
+  padding-bottom: 8px;
   font-weight: 700;
   color: #343434;
   font-size: 20px
@@ -12751,12 +12813,14 @@ header .btn {
 .buyDesc .buyCalculator .progress {
   background: rgba(38, 38, 38, .1);
   height: .875rem;
-  border-radius: 40px
+  border-radius: 40px;
+  padding-bottom: 8px
 }
 
 .buyDesc .buyCalculator .progress .progress-bar {
-  background: #262626;
-  border-radius: 40px
+  background-color: #fabb0f;  
+  border-radius: 40px;
+  border: solid 2px #000
 }
 
 .btn-yellow {
@@ -12789,23 +12853,26 @@ header .btn {
 
 .buyDesc ul.f-figures li p {
   margin: 0;
+  padding-top: 5px;
+  padding-bottom: 8px;
   font-size: 20px;
   font-weight: 700;
   color: #343434
 }
 
 .buyDesc ul.f-figures li p:first-child {
-  color: rgba(52, 52, 52, .6)
+  color: rgba(52, 52, 52, 1)
 }
 
 footer .bg-theme {
   padding: 30px 0;
-  color: #fff;
-  background: #ff4950
+  color: #000;
+  background: #fff
 }
 
 a.footer-logo {
-  display: inline-block
+  display: inline-block;
+  width: 30%
 }
 
 ul.social-media-list {
@@ -12886,5 +12953,5 @@ footer p {
 }
 
 .footer-logo img.img-fluid {
-  width: 70%
+  width: 60%
 }
