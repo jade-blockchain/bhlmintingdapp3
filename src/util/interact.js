@@ -1,10 +1,11 @@
 import { ethers } from 'ethers';
 import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 
 
 
 require("dotenv").config();
-const alchemyKey = process.env.REACT_APP_Dev_Mode === "1" ? process.env.REACT_APP_Test_Network_URL : process.env.REACT_APP_Main_Network_URL;
+const alchemyKey = process.env.REACT_APP_Test_Network_URL;
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey);
 
@@ -14,10 +15,12 @@ const contractAddress = process.env.REACT_APP_contractAddress;
 const CheckWhiteList = process.env.REACT_APP_Check_WhiteList;
 
 
-const NetworkID =  process.env.REACT_APP_Dev_Mode === "1" ? process.env.REACT_APP_Test_Network_Version : process.env.REACT_APP_Main_Network_Version;
-const NetworkChainID = process.env.REACT_APP_Dev_Mode === "1" ? process.env.REACT_APP_Test_Network_chainId : process.env.REACT_APP_Main_Network_chainId;
-const NetworkName = process.env.REACT_APP_Dev_Mode === "1" ? process.env.REACT_APP_Test_Network_Name : process.env.REACT_APP_Main_Network_Name;
-const EtherscanURL = process.env.REACT_APP_Dev_Mode === "1" ? process.env.REACT_APP_Test_Etherscan_url : process.env.REACT_APP_Main_Etherscan_url
+const NetworkID =  process.env.REACT_APP_Test_Network_Versionn;
+const NetworkChainID = process.env.REACT_APP_Test_Network_chainId;
+const NetworkName = process.env.REACT_APP_Test_Network_Name;
+const EtherscanURL = process.env.REACT_APP_Test_Etherscan_url;
+const WalletMxMint = Number(process.env.REACT_APP_Wallet_Max_Mint_Amount);
+const CMaxSpp = Number(process.env.REACT_APP_Max_Supply);
 
 // const TestNetworkVersion = Number(process.env.REACT_APP_Test_Network_Version) ;
 // const MainNetworkVersion = Number(process.env.REACT_APP_Main_Network_Version) ;
@@ -158,7 +161,6 @@ export const loadGoldListedUser= async (address) => {
 };
 
 let wcprovider=null;
-const WalletConnectProvider = window.WalletConnectProvider?.default;
 const providerOptions = {
   walletconnect: {
       package: WalletConnectProvider,
@@ -176,7 +178,7 @@ const web3Modal = new Web3Modal({
   providerOptions,
   disableInjectedProvider: false,
   theme: {
-      background: "#FF4950",
+      background: "#ff00e9",
       main: "#000",
       secondary: "#000",
       border: "transparent",
@@ -190,15 +192,15 @@ export const connectWallet = async () => {
     const _provider = await web3Modal.connect();
     wcprovider = _provider;
 
-    // _provider.on("accountsChanged", (accounts) => {
-    //     fetchAccountData();
-    // });
-    // _provider.on("chainChanged", (chainId) => {
-    //     fetchAccountData();
-    // });
-    // _provider.on("disconnect", () => {
-    //     onDisconnect();
-    // });
+    _provider.on("accountsChanged", (accounts) => {
+         fetchAccountData();
+     });
+     _provider.on("chainChanged", (chainId) => {
+         fetchAccountData();
+     });
+     _provider.on("disconnect", () => {
+         onDisconnect();
+     });
     return fetchAccountData();
   } catch (e) {
       //console.log("Could not get a wallet connection", e);
@@ -224,8 +226,8 @@ export const fetchAccountData = async () => {
   {
   const library = new ethers.providers.Web3Provider(wcprovider);
   const _accounts = await library.listAccounts();
-  const _Network = await library.getNetwork();
-  if (_Network.chainId.toString() !== NetworkID) {
+  const _Netowrk = await library.getNetwork();
+  if (_Netowrk.chainId.toString() !== NetworkID) {
      if( await switchNetwork() === false)
      {
          return {
@@ -390,9 +392,9 @@ export const mintFunction = async (address, message) => {
   }
   const _library = new ethers.providers.Web3Provider(wcprovider);
   const _account = await _library.listAccounts();
-  const _Network = await _library.getNetwork();
+  const _Netwrk = await _library.getNetwork();
 
-  if(_Network.chainId.toString() !== NetworkID.toString())
+  if(_Netwrk.chainId.toString() !== NetworkID.toString())
   {
     return {
       status:
@@ -434,7 +436,7 @@ export const mintFunction = async (address, message) => {
       status: (
         <span>
           Congratulation! You have minted a Dudelz NFT.<br/><br/>
-          Please check the transaction in your wallet, or click <a target="_blank" rel="noreferrer" href={`${EtherscanURL + txHash}`}>here</a>  to view the transaction on ehterscan.<br/><br/>
+          Please check the transaction in your wallet, or click <a target="_blank" href={`${EtherscanURL + txHash}`}>here</a>  to view the transaction on ehterscan.<br/><br/>
           Head to Opensea to view your Dudelz NFT.<br/>
           <a href='https://opensea.io/collection/dudelz-by-jojami'>https://opensea.io/collection/dudelz-by-jojami</a>
         </span>

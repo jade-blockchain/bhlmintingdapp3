@@ -1,17 +1,22 @@
-import React, { useCallback } from "react";
-import logo from './images/logo-head.png';
+import React, { useCallback, Component } from "react";
+// import Switch from "./Switch";
+import logo from './images/Logo (5).png';
 import Button from 'react-bootstrap/Button';
-import logoNFT from './images/NFT3.png';
+import logoNFT from './images/Flattened-3.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from "react";
 import Countdown from 'react-countdown';
 import Discord from './images/discord.png';
 import Twitter from './images/twitter.png';
-import Instagram from './images/instagram.png';
-import OpenSea from './images/Opensea_Button.png';
-import logoFooter from './images/logo-footer.png';
+import OpenSea from './images/opensea.png';
+import logoFooter from './images/Melted_Dudz.png';
 import Form from 'react-bootstrap/Form';
+import axios from 'axios';
+import Dudelzpuller from './dudelzpuller/nftpuller'
+import Meltedpuller from './melteddudzpuller/meltedpuller'
+import AliceCarousel from 'react-alice-carousel';
+import "react-alice-carousel/lib/alice-carousel.css";
 import {
   connectWallet,
   onDisconnect,
@@ -30,7 +35,6 @@ import {
   loadMINETHVALUE
 } from "./util/interact.js";
 
-var renderer = null
 
 const MainPage = () => {
   const [walletAddress, setWallet] = useState("");
@@ -38,7 +42,6 @@ const MainPage = () => {
   const [WAuthorized, setWAuthorized] = useState("");
   const [MintAmount, setMintAmount] = useState(0);
   const [Price, setPrice] = useState(0);
-
   const [CStatus, setCStatus] = useState(0);
   const [TotalSupply, setTotalSupply] = useState(0);
   const [MaxMintAmount, setMaxMintAmount] = useState(10);
@@ -46,6 +49,7 @@ const MainPage = () => {
   const [MaxSupply, setMaxSupply] = useState(5555);
   const [MinEthBalance, setMinEthBalance] = useState(0);
   const [MAXNFTPERADDRESSLIMIT, setMAXNFTPERADDRESSLIMIT] = useState(0);
+  const [value, setValue] = useState(false);
 
   const temporaryInit = useCallback(async () => {
     // const Cost = await loadCost();
@@ -86,7 +90,7 @@ const MainPage = () => {
   //   return () => clearTimeout(timer)
   //  });
 
-const  addWalletListener =  (prvdr) => {
+const addWalletListener =  (prvdr) => {
   if(prvdr!==null){
        prvdr.on("accountsChanged", async(accounts) => {
         const r = await fetchAccountData();
@@ -166,7 +170,7 @@ const  addWalletListener =  (prvdr) => {
     }
   };
 
- 
+
   return (
     <div>
       <div className='main-body'>
@@ -176,7 +180,7 @@ const  addWalletListener =  (prvdr) => {
           <div className="col-6">
             <div className="nabvar-brand">
               <a href="/">
-                <img src={logo} alt="logo"/>
+                <img src={logo} alt="logo" width="80" height="80" />
               </a>
             </div>
           </div>
@@ -188,7 +192,7 @@ const  addWalletListener =  (prvdr) => {
                     {String(walletAddress).substring(0, 6) + '...' + String(walletAddress).substring(38)}
                      </span>
                   ) : (
-                    <span>CONNECT <br/>WALLET</span>
+                    <span>CONNECT<br/>WALLET</span>
                   )
                   }
             </button>
@@ -197,32 +201,34 @@ const  addWalletListener =  (prvdr) => {
         </div>
       </div>
     </header>
-    
-    
-    <div className="buy-nft">
+    <div className="col-md-12 text-center">
+        <a href="#" className="footer-logo"><img src={logoFooter} alt="logo" className="img-fluid"/></a>
+        </div>
+    <div className="parent-container d-flex">
+      <div className="dudelznft">
       <div className="container container-sm">
-      <div className="row">
-        <div className="col-md-12 text-center">
-          <a href="#" className="footer-logo"><img src={logoFooter} alt="logo" className="img-fluid"/></a>
+        <div className="row">
+          <div className="col-md-6">
+            <div className="nft-img-sec">
+            <Dudelzpuller />
+            </div>
+          </div>
         </div>
       </div>
+      </div>
+      <div className="buy-nft">
+      <div className="buy-nft container container-sm">
         <div className="row">
           <div className="col-12">
             <div className="heading text-center">
-              <h2>MINT YOUR NFT</h2>
+              <h2>MELT YOUR DUDELZ</h2>
             </div>
           </div>
         </div>
         <div className="row">
-          
-          <div className="col-md-6">
-            <div className="nft-img-sec">
-              <img src={logoNFT} alt="nft" className="img-fluid"/>
-            </div>
-          </div>
           <div className="col-md-6">
             <div className="buyDesc">
-              <ul className="f-figures">
+              {/* <ul className="f-figures">
                 <li>
                   <p>STATUS</p>
                   <p>{CStatus ===0 ? 'PAUSED'  : (CStatus===1 ? "PUBLIC MINT" : "GOLD MINT")}</p>
@@ -235,7 +241,7 @@ const  addWalletListener =  (prvdr) => {
                 }
                 <li>
                   <p>NETWORK</p>
-                  <p>{process.env.REACT_APP_Dev_Mode ===1 ? process.env.REACT_APP_Test_Network_Name : process.env.REACT_APP_Main_Network_Name}</p>
+                  <p>{process.env.REACT_APP_Test_Network_Name}</p>
                 </li>
                 <li>
                   <p>PRICE</p>
@@ -248,56 +254,86 @@ const  addWalletListener =  (prvdr) => {
                 <li>
                   <p>MAX MINT</p>
                   <p>{MAXNFTPERADDRESSLIMIT} PER WALLET</p>
-                </li>
+              </li>
               </ul>
               <div className="buyCalculator">
                 <p>{TotalSupply}/{MaxSupply} Minted</p>
                 <div className="progress mb-3">
                   <div className="progress-bar" role="progressbar" style={ {width: `${TotalSupply / MaxSupply * 100}%` }} aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                {/* <p className="">How many NFT's to mint?</p> */}
+              </div>
+                <p className="">How many NFT's to mint?</p>
                 <div className="mintDiv">
-                <div className="buyCounter0" >
-                  {/* <div className="btn-theme-box">
-                    <Button variant="theme" className="btn-no-line" onClick={ (e) => { document.getElementById('txtNumber').stepDown(); setMintAmount(parseInt(document.getElementById('txtNumber').value)) ; }}>
+                <div className="buyCounter" >
+                  <div className="btn-theme-box">
+                    <Button variant="theme" className="btn-no-line"  onClick={ (e) => { document.getElementById('txtNumber').stepDown(); setMintAmount(parseInt(document.getElementById('txtNumber').value)) ; }}>
                       <FontAwesomeIcon icon={faMinus} />
                     </Button>
-                  </div> */}
-                  {/* <input type="text" min-value="1" value="1" /> */}
-                  {/* <Form.Control type="number" min='1' max={MAXNFTPERADDRESSLIMIT} name='txtNumber' id="txtNumber" readOnly   value={MAXNFTPERADDRESSLIMIT} /> */}
-                  {/* onChange={(e) => setMintAmount(parseInt(e.target.value))} */}
-                  {/* <div className="btn-theme-box">
+                  </div>
+                  <input type="text" min-value="1" value="3" />
+                  <Form.Control type="number" min='1' max='10' name='txtNumber' id="txtNumber" readOnly value='3' />
+                  
+                  <div className="btn-theme-box">
                     <Button variant="theme" className="btn-no-line" onClick={ (e) => { document.getElementById('txtNumber').stepUp() ; setMintAmount(parseInt(document.getElementById('txtNumber').value)) ;} }>
                       <FontAwesomeIcon icon={faPlus} />
                     </Button>
-                  </div>               */}
+                  </div>
                 </div>
-                <div className="btn-theme-box">
+                {/* <div className="btn-theme-box">
                   <Button variant="theme" size="lg" onClick={onMintPressed}>
                     <span>MINT</span></Button>
+                </div> */}
+                <ul className="f-figures">
+                <li>
+                  <p>STATUS</p>
+                  <p>{CStatus ===0 ? 'PAUSED'  : (CStatus===1 ? "PUBLIC MINT" : "GOLD MINT")}</p>
+                </li>
+                {CStatus < 2 ? <li></li> : 
+                <li>
+                  <p>WHITELIST</p>
+                  <p>{CStatus ===2 ? "YES" : "NO"}</p>
+                </li>
+                }
+                <li>
+                  <p>NETWORK</p>
+                  <p>{process.env.REACT_APP_Test_Network_Name}</p>
+                </li>
+                </ul>
+                <div className="btn-theme-box">
+                  <Button variant="theme" size="lg" onClick={onMintPressed}>
+                    <span>MELT</span></Button>
                 </div>
                 </div>
               </div>
               <p id="status" className="text-center pt-2">{status}</p>
             </div>
           </div>
+          </div>
+          <div className="meltednft">
+          <div className="meltednft container container-sm">
+        <div className="row">
+          <div className="col-md-6">
+            <div className="nft-img-sec">
+            <Meltedpuller />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    </div>
+      </div>
+        </div>
+      </div>
     <footer>
       <div className="bg-theme">
         <div className="container container-sm">
           <div className="row align-items-center">
             <div className="col-md-6">
-              <p>© 2022, Dudelz</p>
+              <p>© 2022, Bounty Hunters Lodge</p>
             </div>
             <div className="col-md-6">
               <ul className="social-media-list">
                 <li><a target={`_blank`} href="https://opensea.io/collection/dudelz-by-jojami"><img src={OpenSea} width='32px' height='32px' alt="logo"/></a></li>
-                <li><a href="#"><img src={Discord} alt="logo"/></a></li>
-                <li><a href="#"><img src={Twitter} alt="logo"/></a></li>
-                <li><a href="#"><img src={Instagram} alt="logo"/></a></li>
+                <li><a href="#"><img src={Discord} width='32px' height='32px' alt="logo"/></a></li>
+                <li><a href="#"><img src={Twitter} width='32px' height='32px' alt="logo"/></a></li>
+                {/* <li><a href="#"><img src={Instagram} alt="logo"/></a></li> */}
               </ul>
             </div>
           </div>
@@ -307,6 +343,7 @@ const  addWalletListener =  (prvdr) => {
     </div>
   );
 };
+
 
 export default MainPage;
 
