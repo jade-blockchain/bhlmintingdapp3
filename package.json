@@ -28,6 +28,7 @@
     "react-bootstrap": "^2.7.0",
     "react-countdown": "^2.3.5",
     "react-dom": "^18.2.0",
+    "react-responsive-carousel": "^3.2.23",
     "react-scripts": "5.0.1",
     "sass": "^1.56.2",
     "stream": "^0.0.2",

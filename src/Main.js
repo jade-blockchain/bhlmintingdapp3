@@ -208,7 +208,7 @@ const addWalletListener =  (prvdr) => {
       <div className="dudelznft">
       <div className="container container-sm">
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-12">
             <div className="nft-img-sec">
             <Dudelzpuller />
             </div>
@@ -311,7 +311,7 @@ const addWalletListener =  (prvdr) => {
           <div className="meltednft">
           <div className="meltednft container container-sm">
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-12">
             <div className="nft-img-sec">
             <Meltedpuller />
             </div>

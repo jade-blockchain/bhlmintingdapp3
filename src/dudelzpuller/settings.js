@@ -17,6 +17,12 @@
     */
     export const nftContract = "0x992B11A8fE7ABFb2E3b7736a1B5fFA3D44eFaA32"
 
+    export const apiKey = "Eu4bs9pBYo1aUL244GHr31NEVHvZz0w1"
+
+    export const baseURL = `https://eth-mainnet.g.alchemy.com/nft/v2/${apiKey}/getNFTs/`
+
+
+
     /*
     Select your mainnet
     eth - bsc - poly
@@ -29,4 +35,4 @@
     /*
     Type the amount of NFT's to display
     */
-    export var displayAmount = 1
+    export var displayAmount = 4

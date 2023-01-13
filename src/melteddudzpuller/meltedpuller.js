@@ -1,11 +1,22 @@
-import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import React from "react";
 import axios from 'axios';
-import NFTCollection from './NFTCollection.json';
-import { Card, Container, Text, Grid, Button, Image } from '@nextui-org/react';
-import { nftContract, key, displayAmount, mainnet } from './settings';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
+import { Card, Text, Button } from '@nextui-org/react';
+import { nftContract, displayAmount } from './settings';
 
+const apiKey = "Eu4bs9pBYo1aUL244GHr31NEVHvZz0w1"
+const baseURL = `https://eth-mainnet.g.alchemy.com/nft/v2/${apiKey}/getNFTs/`;
+const ownerAddr = "0x4c16b1A11B51E218673e9dF375AEC72DC63742bD";
+const fetchURL = `${baseURL}?owner=${ownerAddr}`;
+
+const options = {
+  method: 'GET',
+  url: fetchURL,
+  params: {omitMetadata: 'false', contractAddresses: [nftContract]},
+  headers: {accept: 'application/json'}
+};
 
 export default function NftPuller() {
   const [nfts, setNfts] = useState([])
@@ -14,62 +25,27 @@ export default function NftPuller() {
     generateNft();
     }, [setNfts])
     
-    async function refreshPage() {
-        window.location.reload();
-    }
-    async function generateNft() {
-      const provider = new ethers.providers.JsonRpcProvider(mainnet)
-      const wallet = new ethers.Wallet(key, provider);
-      const contract = new ethers.Contract(nftContract, NFTCollection, wallet);
-      const itemArray = [];
-      contract.totalSupply().then(result => {
-        let totalSup = parseInt(result, 16)
-  
-        /*
-        Replace "displayAmount" with "totalSup"
-        below if you want to display all NFTs 
-        in the collection BUT BE CAREFUL, it will render
-        every nft image and possibly freeze your server/browser!!
-        */
+  async function generateNft() {
+    const itemArray = [];
+    axios
+      .request(options)
+      .then(function (response) {
         for (let i = 0; i < displayAmount; i++) {
-
-
-          var token = i + 1                         
-          const owner = contract.ownerOf(token)
-          const rawUri = contract.tokenURI(token)
-          const Uri = Promise.resolve(rawUri)
-          const getUri = Uri.then(value => {
-            let str = value
-            let cleanUri = str.replace('ipfs://', 'https://ipfs.io/ipfs/')
-            let metadata = axios.get(cleanUri).catch(function (error) {
-              console.log(error.toJSON());
-            });
-            return metadata;
-          })
-          getUri.then(value => {
-            let rawImg = value.data.image
-            var name = value.data.name
-            var desc = value.data.description
-            let image = rawImg.replace('ipfs://', 'https://ipfs.io/ipfs/')
-            Promise.resolve(owner).then(value => {
-              let ownerW = value;
-              let meta = {
-                name: name,
-                img: image,
-                tokenId: token,
-                wallet: ownerW,
-                desc,
-              }
-              console.log(meta)
-              itemArray.push(meta)
-            })
-          })
+          const metadata = response.data.ownedNfts[i].metadata;
+          console.log("image", metadata.image);
+          let imageURL = metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')
+          metadata.image = imageURL;
+          console.log(metadata)
+          itemArray.push(metadata)
         }
       })
-      await new Promise(r => setTimeout(r, 5000));
-      setNfts(itemArray)
-      setLoadingState('loaded');
-    }
+      .catch(function (error) {
+        console.error(error);
+      });
+    await new Promise(r => setTimeout(r, 5000));
+    setNfts(itemArray)
+    setLoadingState('loaded');
+  }
 
 if (loadingState === 'loaded' && !nfts.length)
 
@@ -78,30 +54,29 @@ if (loadingState === 'loaded' && !nfts.length)
         {
         nfts.map((nft, i) => {
           <div>
-          <Card.Image src={nft.img} key={i}/>
+          <Card.Image src={nft.image} key={i}/>
         <h2>No Collections Retrieved</h2>
         </div>
 })}
       </div>
     )
     return (
-      <Container md>
-      <Grid.Container gap={3}>
-        {nfts.map((nft, i) => {
-            return (
-              <Grid >
-                <a>
-                  <Card isHoverable key={i} css={{ width: "90%", marginRight: '$1', boxShadow:'0px 2px 12px #000000' }} variant="bordered">
-                    <Card.Image src={nft.img} />
-                    <Card.Body md css={{background:"#0c90bf"}}>
-                    <Text css={{color:'$black'}} h6>{nft.name}</Text>
-                    </Card.Body>
-                  </Card>
-                </a>
-              </Grid>
-            )
-          })}
-      </Grid.Container>
-    </Container>
+      <>
+        <Carousel>
+          {nfts.map((nft, i) => {
+              return (
+                  <div>
+                    <Card isHoverable key={i} css={{ width: "100%", marginRight: '$1', boxShadow:'0px 2px 12px #000000' }} variant="bordered">
+                      <Card.Image src={nft.image}/>
+                      <Card.Body md css={{background:"#0c90bf"}}>
+                      <Text css={{color:'$black'}} h6>{nft.name}</Text>
+                      </Card.Body>
+                    </Card>
+                  </div>
+              )
+            })}
+        </Carousel>
+        <Button css={{marginLeft: '$10'}}>Select NFT</Button>
+      </>
     )
 }
