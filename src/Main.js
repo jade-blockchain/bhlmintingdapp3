@@ -1,7 +1,8 @@
-import React, { useCallback, Component } from "react";
+import React, { useCallback, Component, createContext } from "react";
 // import Switch from "./Switch";
 import logo from './images/Logo (5).png';
 import Button from 'react-bootstrap/Button';
+import { useWeb3React } from "@web3-react/core";
 import logoNFT from './images/Flattened-3.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -35,7 +36,7 @@ import {
   loadMINETHVALUE
 } from "./util/interact.js";
 
-
+const UserContext = createContext();
 const MainPage = () => {
   const [walletAddress, setWallet] = useState("");
   const [status, setStatus] = useState("");
@@ -50,6 +51,15 @@ const MainPage = () => {
   const [MinEthBalance, setMinEthBalance] = useState(0);
   const [MAXNFTPERADDRESSLIMIT, setMAXNFTPERADDRESSLIMIT] = useState(0);
   const [value, setValue] = useState(false);
+
+  const {
+    library,
+    chainId,
+    account,
+    activate,
+    deactivate,
+    active,
+  } = useWeb3React();
 
   const temporaryInit = useCallback(async () => {
     // const Cost = await loadCost();
@@ -83,6 +93,7 @@ const MainPage = () => {
 
   useEffect(() => {
     temporaryInit();
+    console.log("wallet address", walletAddress);
   }, [temporaryInit]);
 
   // useEffect(async () => {
@@ -210,7 +221,9 @@ const addWalletListener =  (prvdr) => {
         <div className="row">
           <div className="col-md-12">
             <div className="nft-img-sec">
-            <Dudelzpuller />
+              {/* <UserContext.Provider > */}
+                <Dudelzpuller wallet={walletAddress}/>
+              {/* </UserContext.Provider> */}
             </div>
           </div>
         </div>
@@ -313,7 +326,7 @@ const addWalletListener =  (prvdr) => {
         <div className="row">
           <div className="col-md-12">
             <div className="nft-img-sec">
-            <Meltedpuller />
+            <Meltedpuller wallet={walletAddress} />
             </div>
           </div>
         </div>

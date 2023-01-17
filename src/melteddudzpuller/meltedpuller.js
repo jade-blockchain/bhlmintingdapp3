@@ -4,23 +4,22 @@ import axios from 'axios';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import { Card, Text, Button } from '@nextui-org/react';
-import { nftContract, displayAmount } from './settings';
+import { nftContract, displayAmount, baseURL } from './settings';
 
-const apiKey = "Eu4bs9pBYo1aUL244GHr31NEVHvZz0w1"
-const baseURL = `https://eth-mainnet.g.alchemy.com/nft/v2/${apiKey}/getNFTs/`;
-const ownerAddr = "0x4c16b1A11B51E218673e9dF375AEC72DC63742bD";
-const fetchURL = `${baseURL}?owner=${ownerAddr}`;
-
-const options = {
-  method: 'GET',
-  url: fetchURL,
-  params: {omitMetadata: 'false', contractAddresses: [nftContract]},
-  headers: {accept: 'application/json'}
-};
-
-export default function NftPuller() {
+export default function NftPuller(wallet) {
   const [nfts, setNfts] = useState([])
   const [loadingState, setLoadingState] = useState('not-loaded')
+  const ownerAddr = wallet.wallet;
+  const fetchURL = `${baseURL}?owner=${ownerAddr}`;
+
+
+
+  const options = {
+    method: 'GET',
+    url: fetchURL,
+    params: {omitMetadata: 'false', contractAddresses: [nftContract]},
+    headers: {accept: 'application/json'}
+  };
   useEffect(() => {
     generateNft();
     }, [setNfts])

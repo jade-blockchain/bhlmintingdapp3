@@ -6,19 +6,22 @@ import { Carousel } from 'react-responsive-carousel';
 import { Card, Text, Button } from '@nextui-org/react';
 import { nftContract, displayAmount, baseURL } from './settings';
 
-const ownerAddr = "0x4c16b1A11B51E218673e9dF375AEC72DC63742bD";
-const fetchURL = `${baseURL}?owner=${ownerAddr}`;
 
-const options = {
-  method: 'GET',
-  url: fetchURL,
-  params: {omitMetadata: 'false', contractAddresses: [nftContract]},
-  headers: {accept: 'application/json'}
-};
 
-export default function NftPuller() {
+export default function NftPuller(wallet) {
   const [nfts, setNfts] = useState([])
   const [loadingState, setLoadingState] = useState('not-loaded')
+  const ownerAddr = wallet.wallet;
+  const fetchURL = `${baseURL}?owner=${ownerAddr}`;
+
+
+
+  const options = {
+    method: 'GET',
+    url: fetchURL,
+    params: {omitMetadata: 'false', contractAddresses: [nftContract]},
+    headers: {accept: 'application/json'}
+  };
   useEffect(() => {
     generateNft();
     }, [setNfts])
